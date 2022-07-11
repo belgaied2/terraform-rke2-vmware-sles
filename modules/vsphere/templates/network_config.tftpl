@@ -1,0 +1,13 @@
+network:
+  version: 2
+  ethernets:
+    eth0:
+      dhcp4: false
+      addresses:
+        - ${node_ip}
+      gateway4: ${network_gateway}
+      nameservers:
+        addresses:
+          - ${dns_server}
+local-hostname: ${node_name}
+instance-id: ${node_name}

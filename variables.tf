@@ -25,7 +25,12 @@ variable ssh_key {
 
 variable ssh_user {
   type        = string
-  description = "SSH key to add to the cloud-init for user access"
+  description = "SSH user to use"
+}
+
+variable ssh_password {
+  type        = string
+  description = "SSH password to add to the cloud-init for user access"
 }
 
 variable "ssh_key_file" {
@@ -74,13 +79,6 @@ variable "url" {
     description = "url to reach the loadbalancer (must have been setup on your host machine)"
 }
 
-
-variable "node_disk_size" {
-    type = number
-    description = "Disk size for the nodes in Bytes"
-    default = 32212254720
-
-}
 
 variable "vsphere_user" {
   type = string
@@ -175,11 +173,30 @@ variable "main_ip" {
 
 variable "nodes_ip" {
     type = list
-    description = "main server IP"
+    description = "join nodes IPs"
 }
 
 
 variable "rke2_version" {
     type = string
-    description = "main server IP"
+    description = "RKE2 version"
+}
+
+variable "ad_username" {
+    type = string
+    description = "Active Directory username"
+  
+}
+
+variable "ad_password" {
+    type = string
+    description = "Active Directory password"
+    default = ""
+  
+}
+
+variable "ad_domain" {
+  type = string
+  description = "Active Directory domain"
+  
 }

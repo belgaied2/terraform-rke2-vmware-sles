@@ -200,3 +200,9 @@ variable "ad_domain" {
   description = "Active Directory domain"
   
 }
+
+variable "ad_group" {
+  type = string
+  description = "Active Directory group"
+}
+

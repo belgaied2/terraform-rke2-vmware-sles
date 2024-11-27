@@ -206,6 +206,11 @@ variable "ad_domain" {
   
 }
 
+variable "ad_group" {
+  type = string
+  description = "Active Directory group"
+}
+
 variable "time_zone" {
   type = string
   description = "Time zone"

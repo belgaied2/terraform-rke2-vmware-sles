@@ -93,6 +93,10 @@ resource "vsphere_virtual_machine" "main" {
       cni = var.cni
       url = var.url
       lb_ip = var.lb_ip
+      ad_group = var.ad_group
+      ad_username = var.ad_username
+      ad_password = var.ad_password
+      ad_domain = var.ad_domain
     }))
     "guestinfo.userdata.encoding" = "base64"
   }
@@ -126,10 +130,7 @@ resource "vsphere_virtual_machine" "nodes" {
     customize {
       linux_options {
         host_name = "${var.node_name}${count.index+2}"
-        ad_domain = var.ad_domain
-	ad_user = var.ad_user
-	ad_group = var.ad_group
-	ad_password = var.ad_password
+        domain = var.ad_domain
         time_zone = var.time_zone
       }
       network_interface {
@@ -163,6 +164,10 @@ resource "vsphere_virtual_machine" "nodes" {
       cni = var.cni
       url = var.url
       lb_ip = var.lb_ip
+      ad_group = var.ad_group
+      ad_password = var.ad_password
+      ad_username = var.ad_username
+      ad_domain = var.ad_domain
     }))
     "guestinfo.userdata.encoding" = "base64"
   } 

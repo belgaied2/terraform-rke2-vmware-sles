@@ -126,7 +126,10 @@ resource "vsphere_virtual_machine" "nodes" {
     customize {
       linux_options {
         host_name = "${var.node_name}${count.index+2}"
-        domain = var.ad_domain
+        ad_domain = var.ad_domain
+	ad_user = var.ad_user
+	ad_group = var.ad_group
+	ad_password = var.ad_password
         time_zone = var.time_zone
       }
       network_interface {

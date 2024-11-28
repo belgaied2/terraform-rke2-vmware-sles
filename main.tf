@@ -15,6 +15,7 @@ module "vsphere" {
 	node_memory = var.node_memory
 	node_ssh_key = var.ssh_key
 	node_ssh_user = var.ssh_user
+  node_ssh_password = var.ssh_password
 	node_count = var.node_count
 	ssh_private_key = var.ssh_private_key
 	rke2_token = var.rke2_token
@@ -33,6 +34,10 @@ module "vsphere" {
 	nodes_ip = var.nodes_ip
 	main_ip = var.main_ip
 	rke2_version = var.rke2_version
+  ad_username = var.ad_username
+  ad_password = var.ad_password
+  ad_domain = var.ad_domain
+  ad_group = var.ad_group
 }
 
 
@@ -42,14 +47,14 @@ module "rke2" {
 	main_ip = var.main_ip
 	node_ssh_user = var.ssh_user
 	ssh_private_key = var.ssh_private_key
-	url = var.url
+	url = var.main_ip
 	depends_on = [module.vsphere]
 }
 
 
-module "rancher" {
-	source = "./modules/rancher"
-	url = var.url
-	depends_on = [module.rke2]
-}
+# module "rancher" {
+# 	source = "./modules/rancher"
+# 	url = var.url
+# 	depends_on = [module.rke2]
+# }
 

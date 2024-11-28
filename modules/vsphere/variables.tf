@@ -73,6 +73,10 @@ variable "node_ssh_user" {
     type = string
     description = "node username"
 }
+variable "node_ssh_password" {
+    type = string
+    description = "node ssh password"
+}
 
 
 variable "ssh_private_key"{
@@ -171,11 +175,45 @@ variable "main_ip" {
 
 variable "nodes_ip" {
     type = list
-    description = "main server IP"
+    description = "nodes IPs - list"
 }
 
 
 variable "rke2_version" {
     type = string
-    description = "main server IP"
+    description = "Version of RKE2 to install"
+}
+
+variable "ntp_server" {
+    type = string
+    description = "NTP server"  
+    default = ""
+}
+
+variable "ad_username" {
+  type = string
+  description = "Active Directory username"
+}
+
+variable "ad_password" {
+  type = string
+  description = "Active Directory password"
+}
+
+variable "ad_domain" {
+  type = string
+  description = "Active Directory domain"
+  
+}
+
+variable "ad_group" {
+  type = string
+  description = "Active Directory group"
+}
+
+variable "time_zone" {
+  type = string
+  description = "Time zone"
+  default = "Europe/Berlin"
+  
 }

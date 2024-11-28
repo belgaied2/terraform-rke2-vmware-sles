@@ -21,12 +21,6 @@ module "vsphere" {
 	rke2_token = var.rke2_token
 	cni = var.cni
 	url = var.url
-	lb_memory = var.lb_memory
-	lb_vcpu = var.lb_vcpu
-	lb_ssh_key = var.ssh_key
-	lb_ssh_user = var.ssh_user
-	lb_name = var.lb_name
-	lb_ip = var.lb_ip
 	subnet_mask = var.subnet_mask
 	network_gateway = var.network_gateway
 	registration_key = var.registration_key
@@ -52,9 +46,9 @@ module "rke2" {
 }
 
 
-# module "rancher" {
-# 	source = "./modules/rancher"
-# 	url = var.url
-# 	depends_on = [module.rke2]
-# }
+module "rancher" {
+	source = "./modules/rancher"
+	url = var.url
+	depends_on = [module.rke2]
+}
 

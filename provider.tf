@@ -14,4 +14,8 @@ provider "helm" {
   }
 }
 
+provider "kubernetes" {
+  config_path = "kube_config_cluster.yml"
+}
+
 

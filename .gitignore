@@ -37,3 +37,6 @@ override.tf.json
 *cluster.yml
 
 **/vmware_customization.sh.tftpl
+
+# Environment variables file
+.env

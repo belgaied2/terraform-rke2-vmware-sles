@@ -37,6 +37,7 @@ module "vsphere" {
   ad_username = var.ad_username
   ad_password = var.ad_password
   ad_domain = var.ad_domain
+  ad_group = var.ad_group
 }
 
 

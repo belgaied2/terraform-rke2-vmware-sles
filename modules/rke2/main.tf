@@ -1,12 +1,29 @@
+resource "time_sleep" "wait_for_rke2" {
+  depends_on = [null_resource.get_kubeconfig]
+  create_duration = "5m"
+  
+}
+
 resource "null_resource" "get_kubeconfig" {
 
   provisioner "local-exec" {
-  command = "ssh -i ${var.ssh_private_key} -o StrictHostKeyChecking=no ${var.node_ssh_user}@${var.main_ip} 'sudo cat /etc/rancher/rke2/rke2.yaml' > kube_config_cluster.yml"
+  command = "ssh -i ${var.ssh_private_key} -o StrictHostKeyChecking=no ${var.node_ssh_user}@${var.main_ip} 'sudo cat /etc/rancher/rke2/rke2.yaml' > kube_config_cluster.yml && chmod 0600 kube_config_cluster.yml"
   }
 
   provisioner "local-exec" {
   command = "sed -i 's|127.0.0.1|${var.url}|g' ${path.root}/kube_config_cluster.yml"
   }
+
+  provisioner "local-exec" {
+    when = destroy
+    command = "rm -f ${path.root}/kube_config_cluster.yml"
+  }
+}
+
+resource "time_sleep" "wait_for_kubeconfig" {
+  depends_on = [null_resource.get_kubeconfig]
+  create_duration = "10s"
+  
 }
 
 resource "null_resource" "check_access" {
@@ -16,5 +33,5 @@ resource "null_resource" "check_access" {
   command = "kubectl --kubeconfig=${path.root}/kube_config_cluster.yml get nodes"
   }
 
-  depends_on = [null_resource.get_kubeconfig]
+  depends_on = [time_sleep.wait_for_kubeconfig]
 }

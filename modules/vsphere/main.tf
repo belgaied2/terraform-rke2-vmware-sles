@@ -48,7 +48,7 @@ resource "vsphere_virtual_machine" "main" {
   }
   disk {
     label            = "disk0"
-    size             = data.vsphere_virtual_machine.template.disks.0.size 
+    size             = var.disk_size != "" ? var.disk_size : data.vsphere_virtual_machine.template.disks.0.size 
     thin_provisioned = data.vsphere_virtual_machine.template.disks.0.thin_provisioned
   }
   enable_disk_uuid = true
@@ -92,11 +92,6 @@ resource "vsphere_virtual_machine" "main" {
       rke2_token = var.rke2_token
       cni = var.cni
       url = var.url
-      lb_ip = var.lb_ip
-      ad_group = var.ad_group
-      ad_username = var.ad_username
-      ad_password = var.ad_password
-      ad_domain = var.ad_domain
     }))
     "guestinfo.userdata.encoding" = "base64"
   }
@@ -121,7 +116,7 @@ resource "vsphere_virtual_machine" "nodes" {
 
   disk {
     label            = "disk0"
-    size             = data.vsphere_virtual_machine.template.disks.0.size 
+    size             = var.disk_size != "" ? var.disk_size : data.vsphere_virtual_machine.template.disks.0.size 
     thin_provisioned = data.vsphere_virtual_machine.template.disks.0.thin_provisioned
   }
   enable_disk_uuid = true
@@ -163,11 +158,6 @@ resource "vsphere_virtual_machine" "nodes" {
       rke2_token = var.rke2_token
       cni = var.cni
       url = var.url
-      lb_ip = var.lb_ip
-      ad_group = var.ad_group
-      ad_password = var.ad_password
-      ad_username = var.ad_username
-      ad_domain = var.ad_domain
     }))
     "guestinfo.userdata.encoding" = "base64"
   } 

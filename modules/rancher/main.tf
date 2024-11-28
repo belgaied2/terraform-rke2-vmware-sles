@@ -3,7 +3,7 @@ locals {
   install_certmanager = false
 }
 
-resource "null_resource" "cert-manager-crd" {
+resource "null_resource" "cert_manager_crd" {
   count = local.install_certmanager ? 1 : 0
   provisioner "local-exec" {
     command = "kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/${var.certmanager_version}/cert-manager.crds.yaml --kubeconfig kube_config_cluster.yml"
@@ -12,14 +12,16 @@ resource "null_resource" "cert-manager-crd" {
    provisioner "local-exec" {
     command = "kubectl create namespace cert-manager --kubeconfig kube_config_cluster.yml"
   }
-  
-   provisioner "local-exec" {
-    command = "kubectl create namespace cattle-system --kubeconfig kube_config_cluster.yml"
-  }
+}
+
+resource "kubernetes_namespace" "cattle_system" {
+  metadata {
+    name = "cattle-system"
+  } 
 }
 
 
-resource "helm_release" "cert-manager" {
+resource "helm_release" "cert_manager" {
   count = local.install_certmanager ? 1 : 0
 
   name       = "cert-manager"
@@ -27,18 +29,60 @@ resource "helm_release" "cert-manager" {
   chart      = "cert-manager"
   version    = var.certmanager_version
   namespace  = "cert-manager"
-  depends_on = [null_resource.cert-manager-crd]
+  depends_on = [null_resource.cert_manager_crd]
 }
+
+resource "kubernetes_secret" "rancher_cert" {
+  count = local.install_certmanager ? 0 : 1
+  metadata {
+    name      = "tls-rancher-ingress"
+    namespace = "cattle-system"
+  }
+
+  data = {
+    "tls.crt" = file("${path.module}/certs/cert.pem")
+    "tls.key" = file("${path.module}/certs/key.pem")
+  } 
+}
+
+resource "kubernetes_secret" "rancher_ca" {
+  count = local.install_certmanager ? 0 : 1
+  metadata {
+    name      = "tls-ca"
+    namespace = "cattle-system"
+  }
+
+  data = {
+    "cacerts.pem" = file("${path.module}/certs/cacerts.pem")
+  } 
+}
+
+
 
 resource "helm_release" "rancher_release" {
   name       = "rancher"
-  repository = "https://releases.rancher.com/server-charts/stable"
-  chart      = "rancher"
+  chart      = "${path.module}/charts/rancher"
   namespace  = "cattle-system"
-    set {
+  version    = "2.9.3"
+  set {
     name  = "hostname"
     value = var.url
   }
+  dynamic "set" {
+    for_each = local.install_certmanager ? [] : [1]
+    content {
+      name  = "privateCA"
+      value = "true"
+    }
+  }
 
-  depends_on = [helm_release.cert-manager,null_resource.cert-manager-crd]
+  dynamic "set" {
+    for_each = local.install_certmanager ? [] : [1]
+    content {
+      name  = "ingress.tls.source"
+      value = "secret"
+    }
+  }
+
+  depends_on = [helm_release.cert_manager,null_resource.cert_manager_crd, kubernetes_secret.rancher_cert]
 }

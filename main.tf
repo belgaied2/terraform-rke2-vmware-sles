@@ -54,6 +54,9 @@ module "rke2" {
 # module "rancher" {
 # 	source = "./modules/rancher"
 # 	url = var.url
+#	rancher_bootstrap_password = var.rancher_bootstrap_password
+#	rancher_admin_password = var.rancher_admin_password
+#
 # 	depends_on = [module.rke2]
 # }
 

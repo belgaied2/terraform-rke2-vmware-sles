@@ -200,3 +200,14 @@ variable "ad_domain" {
   description = "Active Directory domain"
   
 }
+
+variable "rancher_bootstrap_password" {
+    type = string
+    description = "Temporary password used for Rancher installation"
+
+}
+
+variable "rancher_password" {
+    type = string
+    description = "Rancher admin's password"
+}

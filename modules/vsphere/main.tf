@@ -74,14 +74,14 @@ resource "vsphere_virtual_machine" "main" {
 
   extra_config = {
 
-    "guestinfo.metadata" = base64encode(templatefile("${path.module}/templates/network_config.tftpl", {
-      node_ip = element(var.nodes_ip,0)
-      network_gateway = var.network_gateway
-      dns_server = var.dns_server
-      node_name = "${var.node_name}0"
+    # "guestinfo.metadata" = base64encode(templatefile("${path.module}/templates/network_config.tftpl", {
+    #   node_ip = element(var.nodes_ip,0)
+    #   network_gateway = var.network_gateway
+    #   dns_server = var.dns_server
+    #   node_name = "${var.node_name}0"
 
-    }))
-    "guestinfo.metadata.encoding" = "base64"
+    # }))
+    # "guestinfo.metadata.encoding" = "base64"
 
     "guestinfo.userdata" = base64encode(templatefile("${path.module}/templates/cloud_init_main.cfg", {
       rke2_version = var.rke2_version,
@@ -92,6 +92,10 @@ resource "vsphere_virtual_machine" "main" {
       rke2_token = var.rke2_token
       cni = var.cni
       url = var.url
+      ad_domain = var.ad_domain
+      ad_username = var.ad_username
+      ad_password = var.ad_password
+      ad_group = var.ad_group
     }))
     "guestinfo.userdata.encoding" = "base64"
   }
@@ -139,14 +143,14 @@ resource "vsphere_virtual_machine" "nodes" {
   }
 
   extra_config = {
-    "guestinfo.metadata" = base64encode(templatefile("${path.module}/templates/network_config.tftpl", {
-      node_ip = element(var.nodes_ip,count.index +1)
-      network_gateway = var.network_gateway
-      dns_server = var.dns_server
-      node_name = "${var.node_name}${count.index +2}"
+    # "guestinfo.metadata" = base64encode(templatefile("${path.module}/templates/network_config.tftpl", {
+    #   node_ip = element(var.nodes_ip,count.index +1)
+    #   network_gateway = var.network_gateway
+    #   dns_server = var.dns_server
+    #   node_name = "${var.node_name}${count.index +2}"
 
-    }))
-    "guestinfo.metadata.encoding" = "base64"
+    # }))
+    # "guestinfo.metadata.encoding" = "base64"
     
     "guestinfo.userdata" = base64encode(templatefile("${path.module}/templates/cloud_init_node.cfg", {
       rke2_version = var.rke2_version,
@@ -158,6 +162,10 @@ resource "vsphere_virtual_machine" "nodes" {
       rke2_token = var.rke2_token
       cni = var.cni
       url = var.url
+      ad_domain = var.ad_domain
+      ad_username = var.ad_username
+      ad_password = var.ad_password
+      ad_group = var.ad_group
     }))
     "guestinfo.userdata.encoding" = "base64"
   } 

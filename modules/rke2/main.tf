@@ -1,5 +1,4 @@
 resource "time_sleep" "wait_for_rke2" {
-  depends_on = [null_resource.get_kubeconfig]
   create_duration = "5m"
   
 }
@@ -18,11 +17,12 @@ resource "null_resource" "get_kubeconfig" {
     when = destroy
     command = "rm -f ${path.root}/kube_config_cluster.yml"
   }
+  depends_on = [ time_sleep.wait_for_rke2 ]
 }
 
 resource "time_sleep" "wait_for_kubeconfig" {
   depends_on = [null_resource.get_kubeconfig]
-  create_duration = "10s"
+  create_duration = "1m"
   
 }
 

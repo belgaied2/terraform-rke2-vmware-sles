@@ -10,3 +10,62 @@ variable "certmanager_version" {
   
 }
 
+variable "rancher_bootstrap_password" {
+    type = string
+    description = "Temporary password used for Rancher installation"
+
+}
+
+variable "rancher_password" {
+    type = string
+    description = "Rancher admin's password"
+}
+
+
+variable "ad_username_browse" {
+    type = string
+    description = "Active Directory username"
+  
+}
+
+variable "ad_password_browse" {
+    type = string
+    description = "Active Directory password"
+    default = ""
+  
+}
+
+variable "ad_domain" {
+  type = string
+  description = "Active Directory domain"
+  
+}
+
+variable "ad_port" {
+  type = number
+  description = "Active Directory connection port"
+  default = 389
+  
+}
+
+
+variable "ad_searchbase" {
+    type = string
+    description = "User search base DN"
+}
+
+
+
+variable "ad_username_admin" {
+    type = string
+    description = "Active Directory username"
+  
+}
+
+variable "ad_password_admin" {
+    type = string
+    description = "Active Directory password"
+    default = ""
+  
+}
+

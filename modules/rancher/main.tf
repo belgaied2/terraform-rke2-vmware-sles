@@ -36,7 +36,7 @@ resource "kubernetes_secret" "rancher_cert" {
   count = local.install_certmanager ? 0 : 1
   metadata {
     name      = "tls-rancher-ingress"
-    namespace = "cattle-system"
+    namespace = kubernetes_namespace.cattle_system.metadata[0].name
   }
 
   data = {
@@ -49,7 +49,7 @@ resource "kubernetes_secret" "rancher_ca" {
   count = local.install_certmanager ? 0 : 1
   metadata {
     name      = "tls-ca"
-    namespace = "cattle-system"
+    namespace = kubernetes_namespace.cattle_system.metadata[0].name
   }
 
   data = {
@@ -61,8 +61,9 @@ resource "kubernetes_secret" "rancher_ca" {
 
 resource "helm_release" "rancher_release" {
   name       = "rancher"
-  chart      = "${path.module}/charts/rancher"
-  namespace  = "cattle-system"
+  chart      = "rancher"
+  repository = "https://releases.rancher.com/server-charts/stable"
+  namespace  = kubernetes_namespace.cattle_system.metadata[0].name
   version    = "2.9.3"
   set {
     name  = "hostname"
@@ -84,5 +85,5 @@ resource "helm_release" "rancher_release" {
     }
   }
 
-  depends_on = [helm_release.cert_manager,null_resource.cert_manager_crd, kubernetes_secret.rancher_cert]
+  depends_on = [helm_release.cert_manager,null_resource.cert_manager_crd, kubernetes_secret.rancher_cert, kubernetes_secret.rancher_ca]
 }

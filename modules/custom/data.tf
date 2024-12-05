@@ -30,6 +30,6 @@ data "vsphere_virtual_machine" "template" {
 }
 
 locals {
-  node_command = rancher2_cluster_v2.custom_cluster_vsphere.cluster_registration_token[0].node_command
+  node_command = rancher2_cluster_v2.custom_cluster_vsphere.cluster_registration_token[0].insecure_node_command
 
 }

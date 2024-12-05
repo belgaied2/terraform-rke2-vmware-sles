@@ -1,4 +1,3 @@
-
 provider "vsphere" {
   user           = var.vsphere_user
   password       = var.vsphere_password
@@ -29,8 +28,8 @@ provider "rancher2" {
 provider "rancher2" {
   alias = "admin"
 
-  api_url   = rancher2_bootstrap.admin.url
-  token_key = rancher2_bootstrap.admin.token
+  api_url   = module.rancher.rancher_url
+  token_key = module.rancher.rancher_token
   insecure  = true
 }
 

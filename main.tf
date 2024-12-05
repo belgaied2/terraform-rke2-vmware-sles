@@ -47,8 +47,13 @@ module "rke2" {
 
 
 module "rancher" {
+  providers = {
+    rancher2 = rancher2.bootstrap
+  }
 	source = "./modules/rancher"
 	url = var.url
+  rancher_password = var.rancher_password
+  rancher_bootstrap_password = var.rancher_bootstrap_password
 	depends_on = [module.rke2]
 }
 # module "rancher" {
@@ -60,3 +65,35 @@ module "rancher" {
 # 	depends_on = [module.rke2]
 # }
 
+module "custom_cluster" {
+  providers = {
+    rancher2 = rancher2.admin
+  }
+
+  source = "./modules/custom"
+  node_count = var.node_count
+  node_memory = var.node_memory
+  node_vcpu = var.node_vcpu
+  node_prefix = "CND-BKD-TST-TC"
+  disk_size = ""
+  vsphere_resource_pool = ""
+  vsphere_dc = var.vsphere_dc
+  vsphere_datastore = var.vsphere_datastore
+  vsphere_network = var.vsphere_network
+  vsphere_cluster = var.vsphere_cluster
+  ad_domain = var.ad_domain
+  ad_username = var.ad_username
+  ad_password = var.ad_password
+  ad_group = var.ad_group
+  node_ssh_user = var.ssh_user
+  node_ssh_password = var.ssh_password
+  time_zone = "Europe/Berlin"
+  ipv4_gateway = var.network_gateway
+  dns_server = var.dns_server
+  first_node_ip = "10.29.226.232"
+  vsphere_template = var.vsphere_template
+  node_ssh_key = var.ssh_key
+  cluster_name = "cnd4-test-cluster"
+  cluster_description = "Test RKE2 Cluster for CND4"
+  k8s_version = var.rke2_version
+}

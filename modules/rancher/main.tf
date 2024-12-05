@@ -18,6 +18,10 @@ resource "kubernetes_namespace" "cattle_system" {
   metadata {
     name = "cattle-system"
   } 
+  lifecycle {
+    ignore_changes = [metadata]
+  }
+
 }
 
 
@@ -43,6 +47,9 @@ resource "kubernetes_secret" "rancher_cert" {
     "tls.crt" = file("${path.module}/certs/cert.pem")
     "tls.key" = file("${path.module}/certs/key.pem")
   } 
+  lifecycle {
+    ignore_changes = [metadata]
+  }
 }
 
 resource "kubernetes_secret" "rancher_ca" {
@@ -55,6 +62,10 @@ resource "kubernetes_secret" "rancher_ca" {
   data = {
     "cacerts.pem" = file("${path.module}/certs/cacerts.pem")
   } 
+
+  lifecycle {
+    ignore_changes = [metadata]
+  }
 }
 
 
@@ -69,6 +80,10 @@ resource "helm_release" "rancher_release" {
     name  = "hostname"
     value = var.url
   }
+  set {
+   name  = "bootstrapPassword"
+   value = var.rancher_bootstrap_password
+ }
   dynamic "set" {
     for_each = local.install_certmanager ? [] : [1]
     content {
@@ -85,7 +100,11 @@ resource "helm_release" "rancher_release" {
     }
   }
 
-  depends_on = [helm_release.cert_manager,null_resource.cert_manager_crd, kubernetes_secret.rancher_cert, kubernetes_secret.rancher_ca]
+  # lifecycle {
+  #   ignore_changes = [manifest]
+  # }
+
+  depends_on = [helm_release.cert_manager,null_resource.cert_manager_crd, kubernetes_secret.rancher_cert, kubernetes_secret.rancher_ca, kubernetes_namespace.cattle_system]
 }
 
 #resource "helm_release" "rancher_release" {
@@ -109,26 +128,25 @@ resource "helm_release" "rancher_release" {
 
 
 resource "rancher2_bootstrap" "admin" {
-  provider         = rancher2.bootstrap
-  initial_password = var.rancher_install_password
   password         = var.rancher_password
+  initial_password = var.rancher_bootstrap_password
   telemetry        = false
-  #depends_on       = [helm_release.rancher_release]
+  depends_on       = [helm_release.rancher_release]
 }
 
 
 
 # Create a new rancher2 Auth Config ActiveDirectory
-resource "rancher2_auth_config_activedirectory" "activedirectory" {
-  provider = rancher2.admin
-  servers = var.ad_server
-  service_account_username = var.ad_username_browse
-  service_account_password = var.ad_password_browse
-  user_search_base = var.ad_searchbase
-  port = var.ad_port
-  test_username = var.ad_username_admin
-  test_password = var.ad_password_admin
-}
+# resource "rancher2_auth_config_activedirectory" "activedirectory" {
+#   provider = rancher2.admin
+#   servers = var.ad_server
+#   service_account_username = var.ad_username_browse
+#   service_account_password = var.ad_password_browse
+#   user_search_base = var.ad_searchbase
+#   port = var.ad_port
+#   test_username = var.ad_username_admin
+#   test_password = var.ad_password_admin
+# }
 
 
 

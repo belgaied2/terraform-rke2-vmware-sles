@@ -182,6 +182,12 @@ variable "rke2_version" {
     description = "RKE2 version"
 }
 
+variable "ad_domain" {
+    type = string
+    description = "Active Directory domain"
+  
+}
+
 variable "ad_username" {
     type = string
     description = "Active Directory username"
@@ -195,24 +201,18 @@ variable "ad_password" {
   
 }
 
-variable "ad_domain" {
-  type = string
-  description = "Active Directory domain"
-  
-}
-
 variable "ad_group" {
   type = string
   description = "Active Directory group"
 }
 
-variable "rancher_bootstrap_password" {
-    type = string
-    description = "Temporary password used for Rancher installation"
-
-}
-
 variable "rancher_password" {
     type = string
     description = "Rancher admin's password"
+}
+
+variable "rancher_bootstrap_password" {
+    type = string
+    description = "Rancher bootstrap password"
+  
 }

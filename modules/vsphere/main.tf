@@ -126,6 +126,7 @@ resource "vsphere_virtual_machine" "nodes" {
   enable_disk_uuid = true
   clone {
     template_uuid = data.vsphere_virtual_machine.template.id
+    
     customize {
       linux_options {
         host_name = "${var.node_name}${count.index+2}"

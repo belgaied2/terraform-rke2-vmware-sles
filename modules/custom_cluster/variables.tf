@@ -14,7 +14,7 @@ variable "node_count" {
   type        = number
 }
 
-variable "node_prefix" {
+variable "node_name_prefix" {
   description = "Prefix for the node names"
   type        = string
 }
@@ -32,6 +32,24 @@ variable "node_memory" {
 variable "disk_size" {
   description = "Size of the disk"
   type        = string
+}
+
+variable "vsphere_server" {
+  description = "The vSphere server"
+  type        = string
+  
+}
+
+variable "vsphere_user" {
+  description = "The vSphere user"
+  type        = string
+  
+}
+
+variable "vsphere_password" {
+  description = "The vSphere password"
+  type        = string
+  
 }
 
 variable "vsphere_dc" {
@@ -148,5 +166,23 @@ variable "ad_group" {
 variable "k8s_version" {
   description = "Kubernetes version"
   type        = string
+  
+}
+
+variable "network_gateway" {
+  description = "Network gateway"
+  type        = string
+  
+}
+
+variable "rke2_version" {
+  description = "RKE2 version"
+  type        = string
+  
+}
+
+variable "downstream_ip_list" {
+  description = "List of downstream IPs"
+  type        = list(string)
   
 }

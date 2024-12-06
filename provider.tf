@@ -9,12 +9,24 @@ provider "vsphere" {
 
 provider "helm" {
   kubernetes {
-    config_path = "kube_config_cluster.yml"
+    # config_path = "kube_config_cluster.yml"
+    host = "https://${var.nodes_ip[0]}:6443"
+    cluster_ca_certificate = base64decode(module.rke2.kubeconfig.clusters[0].cluster.certificate-authority-data)
+    client_certificate = base64decode(module.rke2.kubeconfig.users[0].user.client-certificate-data)
+    client_key = base64decode(module.rke2.kubeconfig.users[0].user.client-key-data)
+
   }
 }
 
 provider "kubernetes" {
-  config_path = "kube_config_cluster.yml"
+  # config_path = "kube_config_cluster.yml"
+  host = "https://${var.nodes_ip[0]}:6443"
+  cluster_ca_certificate = base64decode(module.rke2.kubeconfig.clusters[0].cluster.certificate-authority-data)
+  client_certificate = base64decode(module.rke2.kubeconfig.users[0].user.client-certificate-data)
+  client_key = base64decode(module.rke2.kubeconfig.users[0].user.client-key-data)
+
+
+
 }
 
 provider "rancher2" {

@@ -1,48 +1,74 @@
 
-module "vsphere" {
-	source = "./modules/vsphere"
-	vsphere_user = var.vsphere_user
-	vsphere_password = var.vsphere_password
-	vsphere_server = var.vsphere_server
-	vsphere_cluster = var.vsphere_cluster
-	vsphere_dc = var.vsphere_dc
-	vsphere_datastore = var.vsphere_datastore
-	vsphere_network = var.vsphere_network
-	vsphere_resource_pool = var.vsphere_resource_pool
-	vsphere_template = var.vsphere_template
-	node_name = var.node_name
-	node_vcpu = var.node_vcpu
-	node_memory = var.node_memory
-	node_ssh_key = var.ssh_key
-	node_ssh_user = var.ssh_user
-  node_ssh_password = var.ssh_password
-	node_count = var.node_count
-	ssh_private_key = var.ssh_private_key
-	rke2_token = var.rke2_token
-	cni = var.cni
-	url = var.url
-	subnet_mask = var.subnet_mask
-	network_gateway = var.network_gateway
-	registration_key = var.registration_key
-	dns_server = var.dns_server
-	nodes_ip = var.nodes_ip
-	main_ip = var.main_ip
-	rke2_version = var.rke2_version
-  ad_username = var.ad_username
-  ad_password = var.ad_password
-  ad_domain = var.ad_domain
-  ad_group = var.ad_group
-}
+# module "vsphere" {
+# 	source = "./modules/vsphere"
+# 	vsphere_user = var.vsphere_user
+# 	vsphere_password = var.vsphere_password
+# 	vsphere_server = var.vsphere_server
+# 	vsphere_cluster = var.vsphere_cluster
+# 	vsphere_dc = var.vsphere_dc
+# 	vsphere_datastore = var.vsphere_datastore
+# 	vsphere_network = var.vsphere_network
+# 	vsphere_resource_pool = var.vsphere_resource_pool
+# 	vsphere_template = var.vsphere_template
+# 	node_name = var.node_name
+# 	node_vcpu = var.node_vcpu
+# 	node_memory = var.node_memory
+# 	node_ssh_key = var.ssh_key
+# 	node_ssh_user = var.ssh_user
+#   node_ssh_password = var.ssh_password
+# 	node_count = var.node_count
+# 	ssh_private_key = var.ssh_private_key
+# 	rke2_token = var.rke2_token
+# 	cni = var.cni
+# 	url = var.url
+# 	subnet_mask = var.subnet_mask
+# 	network_gateway = var.network_gateway
+# 	registration_key = var.registration_key
+# 	dns_server = var.dns_server
+# 	nodes_ip = var.nodes_ip
+# 	main_ip = var.main_ip
+# 	rke2_version = var.rke2_version
+#   ad_username = var.ad_username
+#   ad_password = var.ad_password
+#   ad_domain = var.ad_domain
+#   ad_group = var.ad_group
+# }
 
 
 module "rke2" {
 	source = "./modules/rke2"
-	nodes_ip = var.nodes_ip
-	main_ip = var.main_ip
 	node_ssh_user = var.ssh_user
-	ssh_private_key = var.ssh_private_key
-	url = var.main_ip
-	depends_on = [module.vsphere]
+	ssh_private_key = var.ssh_key_file
+	url = var.lb_ip
+  rancher_ip_list = var.nodes_ip
+  vsphere_cluster = var.vsphere_cluster
+  vsphere_server = var.vsphere_server
+  vsphere_user = var.vsphere_user
+  vsphere_password = var.vsphere_password
+  vsphere_dc = var.vsphere_dc
+  vsphere_datastore = var.vsphere_datastore
+  vsphere_network = var.vsphere_network
+  vsphere_resource_pool = var.vsphere_resource_pool
+  vsphere_template = var.vsphere_template
+  node_vcpu = var.node_vcpu
+  node_memory = var.node_memory
+
+  ad_domain = var.ad_domain
+  ad_username = var.ad_username
+  ad_password = var.ad_password
+  ad_group = var.ad_group
+
+  rke2_version = var.rke2_version
+  node_ssh_password = var.ssh_password
+  cni = var.cni
+  rke2_token = var.rke2_token
+  network_gateway = var.network_gateway
+  node_name_prefix = "CND-BKD-RC"
+  node_count = 3
+  node_ssh_key = var.ssh_key
+  dns_server = var.dns_server
+
+
 }
 
 
@@ -70,17 +96,23 @@ module "custom_cluster" {
     rancher2 = rancher2.admin
   }
 
-  source = "./modules/custom"
-  node_count = var.node_count
+  source = "./modules/custom_cluster"
+  node_count = 5
   node_memory = var.node_memory
   node_vcpu = var.node_vcpu
-  node_prefix = "CND-BKD-TST-TC"
+  node_name_prefix = "CND-BKD-TST-TC"
   disk_size = ""
   vsphere_resource_pool = ""
+  vsphere_server = var.vsphere_server
+  vsphere_user = var.vsphere_user
+  vsphere_password = var.vsphere_password
   vsphere_dc = var.vsphere_dc
   vsphere_datastore = var.vsphere_datastore
   vsphere_network = var.vsphere_network
   vsphere_cluster = var.vsphere_cluster
+  network_gateway = var.network_gateway
+  rke2_version = var.rke2_version
+  downstream_ip_list = [for i in range(232, 237) : "10.29.226.${i}"]
   ad_domain = var.ad_domain
   ad_username = var.ad_username
   ad_password = var.ad_password

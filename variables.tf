@@ -39,30 +39,6 @@ variable "ssh_key_file" {
     default = "~/.ssh/id_rsa"
 }
 
-
-variable lb_memory {
-  type        = string
-  default     = 2048
-  description = "The amount of RAM for the loadbalancer"
-}
-
-variable lb_vcpu {
-  type        = number
-  description = "Number of vcpu for the lb"
-}
-
-variable "lb_name" {
-  type = string
-  description = "Hostname used for the loadbalancer"
-  
-}
-
-variable "lb_ip" {
-type = string
-description = "Loadbalancer's ip"
-}
-
-
 variable "subnet_mask" {
   type = string
   description = "Hostname used for the loadbalancer"
@@ -125,15 +101,6 @@ variable "vsphere_resource_pool" {
     description = "Resource pool name"
 }
 
-
-
-variable "ssh_private_key"{
-    type = string
-    description = "Location of the private key to connect to the host"
-}
-
-
-
 variable "vsphere_template" {
     type = string
     description = "Name of the template to use to create VMS"
@@ -165,9 +132,9 @@ variable "dns_server" {
 
 
 
-variable "main_ip" {
+variable "lb_ip" {
     type = string
-    description = "main server IP"
+    description = "VIP for the loadbalancer"
 }
 
 

@@ -186,3 +186,19 @@ variable "downstream_ip_list" {
   type        = list(string)
   
 }
+
+variable "vip_address" {
+  description = "VIP ip address"
+  type = string  
+}
+
+variable "vip_cidr" {
+  description = "VIP CIDR"
+  type = number
+  default = 32
+}
+
+variable "interface_vip" {
+  description = "VIP network interface"
+  type = string
+}

@@ -128,4 +128,7 @@ module "custom_cluster" {
   cluster_name = "cnd4-test-cluster"
   cluster_description = "Test RKE2 Cluster for CND4"
   k8s_version = var.rke2_version
+  vip_address = var.vip_address
+  interface_vip = var.interface_vip
+  vip_cidr = var.vip_cidr
 }

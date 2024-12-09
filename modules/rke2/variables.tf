@@ -26,3 +26,15 @@ variable "nodes_ip" {
     type = list
     description = "main server IP"
 }
+
+
+variable "rke2_token" {
+  type = string
+  description = "RKE2 Cluster token"
+}
+
+
+variable "node_count"{
+    type = number
+    description = "Number of nodes to provision"
+}

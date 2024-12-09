@@ -40,3 +40,7 @@ override.tf.json
 
 # Environment variables file
 .env
+
+
+#Certificates
+*.pem

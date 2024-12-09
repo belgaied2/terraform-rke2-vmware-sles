@@ -1,6 +1,17 @@
-resource "time_sleep" "wait_for_rke2" {
-  create_duration = "5m"
-  
+resource "null_resource" "wait_for_rke2_main" {
+  provisioner "local-exec" {
+  command = "while ! curl -k -u node:${var.rke2_token} -s -o /dev/null -w '%{http_code}' https://${var.main_ip}:9345/v1-rke2/readyz | grep -q 200; do echo 'Retrying...'; sleep 5; done && echo 'RKE2 is ready!'"
+  }
+
+}
+
+resource "null_resource" "wait_for_rke2_nodes" {
+  count = var.node_count -1
+  provisioner "local-exec" {
+  #var.nodes_ip[count.index]
+  command = "while ! curl -k -u node:${var.rke2_token} -s -o /dev/null -w '%{http_code}' https://${var.nodes_ip[count.index]}:9345/v1-rke2/readyz | grep -q 200; do echo 'Retrying...'; sleep 5; done && echo 'RKE2 is ready!'"
+  }
+  depends_on = [ null_resource.wait_for_rke2_main ] 
 }
 
 resource "null_resource" "get_kubeconfig" {
@@ -17,21 +28,5 @@ resource "null_resource" "get_kubeconfig" {
     when = destroy
     command = "rm -f ${path.root}/kube_config_cluster.yml"
   }
-  depends_on = [ time_sleep.wait_for_rke2 ]
-}
-
-resource "time_sleep" "wait_for_kubeconfig" {
-  depends_on = [null_resource.get_kubeconfig]
-  create_duration = "1m"
-  
-}
-
-resource "null_resource" "check_access" {
-
-
-  provisioner "local-exec" {
-  command = "kubectl --kubeconfig=${path.root}/kube_config_cluster.yml get nodes"
-  }
-
-  depends_on = [time_sleep.wait_for_kubeconfig]
+  depends_on = [ null_resource.wait_for_rke2_nodes ]
 }

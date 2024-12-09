@@ -105,6 +105,7 @@ resource "vsphere_virtual_machine" "main" {
 resource "vsphere_virtual_machine" "nodes" {
   count = var.node_count -1
   name   = "${var.node_name}${count.index +2}"
+  
   resource_pool_id = var.vsphere_resource_pool == "" ? data.vsphere_compute_cluster.cluster.resource_pool_id : data.vsphere_resource_pool.pool[0].id
   datastore_id     = data.vsphere_datastore.datastore.id
   num_cpus = var.node_vcpu

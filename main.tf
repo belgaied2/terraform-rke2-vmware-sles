@@ -42,6 +42,8 @@ module "rke2" {
 	node_ssh_user = var.ssh_user
 	ssh_private_key = var.ssh_private_key
 	url = var.main_ip
+  node_count = var.node_count
+  rke2_token =var.rke2_token 
 	depends_on = [module.vsphere]
 }
 

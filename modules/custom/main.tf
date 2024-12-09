@@ -1,7 +1,8 @@
 resource "rancher2_cluster_v2" "custom_cluster_vsphere" {
+  provider = rancher2.admin
   name = var.cluster_name
   kubernetes_version = var.k8s_version
-  
+    
 }
 
 resource "vsphere_virtual_machine" "downstream_cluster_node" {

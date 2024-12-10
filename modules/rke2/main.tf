@@ -41,7 +41,7 @@ module "rancher_virtual_machines" {
 
 resource "null_resource" "wait_for_rke2_main" {
   provisioner "local-exec" {
-  command = "while ! curl -k -u node:${var.rke2_token} -s -o /dev/null -w '%{http_code}' https://${var.main_ip}:9345/v1-rke2/readyz | grep -q 200; do echo 'Retrying...'; sleep 5; done && echo 'RKE2 is ready!'"
+  command = "while ! curl -k -u node:${var.rke2_token} -s -o /dev/null -w '%%{http_code}' https://${var.main_ip}:9345/v1-rke2/readyz | grep -q 200; do echo 'Retrying...'; sleep 5; done && echo 'RKE2 is ready!'"
   }
 
 }
@@ -50,7 +50,7 @@ resource "null_resource" "wait_for_rke2_nodes" {
   count = var.node_count -1
   provisioner "local-exec" {
   #var.nodes_ip[count.index]
-  command = "while ! curl -k -u node:${var.rke2_token} -s -o /dev/null -w '%{http_code}' https://${var.rancher_ip_list[count.index]}:9345/v1-rke2/readyz | grep -q 200; do echo 'Retrying...'; sleep 5; done && echo 'RKE2 is ready!'"
+  command = "while ! curl -k -u node:${var.rke2_token} -s -o /dev/null -w '%%{http_code}' https://${var.rancher_ip_list[count.index]}:9345/v1-rke2/readyz | grep -q 200; do echo 'Retrying...'; sleep 5; done && echo 'RKE2 is ready!'"
   }
   depends_on = [ null_resource.wait_for_rke2_main ] 
 }

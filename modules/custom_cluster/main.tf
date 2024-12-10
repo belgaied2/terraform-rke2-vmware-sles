@@ -124,7 +124,7 @@ spec:
             path: /etc/rancher/rke2/rke2.yaml
           name: kubeconfig
 EOF
-  
+    }
 }
 
 module "custom_cluster_virtual_machines" {

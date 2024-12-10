@@ -80,6 +80,12 @@ module "rancher" {
 	url = var.url
   rancher_password = var.rancher_password
   rancher_bootstrap_password = var.rancher_bootstrap_password
+  ad_password_admin = var.ad_password_admin
+  ad_searchbase = var.ad_searchbase
+  ad_username_admin = var.ad_username_admin
+  ad_username_browse = var.ad_username_browse
+  ad_password_browse = var.ad_password_browse
+  ad_domain = var.ad_domain
 	depends_on = [module.rke2]
 }
 # module "rancher" {

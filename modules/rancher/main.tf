@@ -69,7 +69,6 @@ resource "kubernetes_secret" "rancher_ca" {
 }
 
 
-
 resource "helm_release" "rancher_release" {
   name       = "rancher"
   chart      = "rancher"

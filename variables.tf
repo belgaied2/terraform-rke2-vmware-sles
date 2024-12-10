@@ -200,3 +200,35 @@ variable "interface_vip" {
   description = "VIP network interface"
   type = string
 }
+
+
+ variable "ad_searchbase" {
+     type = string
+     description = "User search base DN"
+ }
+
+
+
+ variable "ad_username_admin" {
+     type = string
+     description = "Active Directory username"
+ 
+ }
+
+ variable "ad_password_admin" {
+     type = string
+     description = "Active Directory password"
+     default = ""
+  
+ }
+
+ variable "ad_password_browse" {
+  type = string
+  description = "Active directory password for the discovery user"
+  
+}
+
+variable "ad_username_browse" {
+ type = string
+ description = "Active directory user for discovery"  
+}

@@ -121,7 +121,7 @@ spec:
           operator: Exists
       volumes:
         - hostPath:
-            path: /etc/rancher/k3s/k3s.yaml
+            path: /etc/rancher/rke2/rke2.yaml
           name: kubeconfig
 EOF
   

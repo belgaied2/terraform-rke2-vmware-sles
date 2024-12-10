@@ -81,12 +81,3 @@ resource "time_sleep" "wait_for_kubeconfig" {
   
 }
 
-# resource "null_resource" "check_access" {
-
-
-#   provisioner "local-exec" {
-#   command = "kubectl --kubeconfig=${path.root}/kube_config_cluster.yml get nodes"
-#   }
-
-#   depends_on = [time_sleep.wait_for_kubeconfig]
-# }

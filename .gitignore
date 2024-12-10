@@ -40,3 +40,9 @@ override.tf.json
 
 # Environment variables file
 .env
+
+# ignore all certicate files and private keys
+/**/*.crt
+/**/*.key
+/**/*.pem
+/**/id_rsa

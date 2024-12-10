@@ -39,20 +39,13 @@ module "rancher_virtual_machines" {
   ]
 }
 
-resource "null_resource" "wait_for_rke2_main" {
-  provisioner "local-exec" {
-  command = "while ! curl -k -u node:${var.rke2_token} -s -o /dev/null -w '%%{http_code}' https://${var.main_ip}:9345/v1-rke2/readyz | grep -q 200; do echo 'Retrying...'; sleep 5; done && echo 'RKE2 is ready!'"
-  }
-
-}
-
 resource "null_resource" "wait_for_rke2_nodes" {
-  count = var.node_count -1
+  count = var.node_count 
   provisioner "local-exec" {
   #var.nodes_ip[count.index]
   command = "while ! curl -k -u node:${var.rke2_token} -s -o /dev/null -w '%%{http_code}' https://${var.rancher_ip_list[count.index]}:9345/v1-rke2/readyz | grep -q 200; do echo 'Retrying...'; sleep 5; done && echo 'RKE2 is ready!'"
   }
-  depends_on = [ null_resource.wait_for_rke2_main ] 
+  depends_on = [ module.rancher_virtual_machines ]
 }
 
 
@@ -62,7 +55,7 @@ data "remote_file" "get_kubeconfig" {
     port = 22
     user= var.node_ssh_user
     # password = var.node_ssh_password
-    private_key_path = "/home/mohamed/.ssh/id_rsa"
+    private_key_path = "${path.root}/id_rsa"
     # private_key_path = var.ssh_private_key
     sudo = true
   }

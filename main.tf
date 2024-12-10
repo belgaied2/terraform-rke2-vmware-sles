@@ -138,3 +138,15 @@ module "custom_cluster" {
   interface_vip = var.interface_vip
   vip_cidr = var.vip_cidr
 }
+
+# Create a new rancher2 Auth Config ActiveDirectory
+resource "rancher2_auth_config_activedirectory" "activedirectory" {
+  provider = rancher2.admin
+  servers = [var.ad_server]
+  service_account_username = var.ad_username_browse
+  service_account_password = var.ad_password_browse
+  user_search_base = var.ad_searchbase
+  port = var.ad_port
+  test_username = var.ad_username_admin
+  test_password = var.ad_password_admin
+}

@@ -111,28 +111,3 @@ resource "rancher2_bootstrap" "admin" {
   telemetry        = false
   depends_on       = [helm_release.rancher_release]
 }
-
-
-
-# Create a new rancher2 Auth Config ActiveDirectory
- resource "rancher2_auth_config_activedirectory" "activedirectory" {
-   provider = rancher2.admin
-   servers = var.ad_server
-   service_account_username = var.ad_username_browse
-   service_account_password = var.ad_password_browse
-   user_search_base = var.ad_searchbase
-   port = var.ad_port
-   test_username = var.ad_username_admin
-   test_password = var.ad_password_admin
- }
-
-
-
-
-
-
-
-
-
-
-

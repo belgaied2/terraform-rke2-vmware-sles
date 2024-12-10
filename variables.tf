@@ -202,33 +202,46 @@ variable "interface_vip" {
 }
 
 
- variable "ad_searchbase" {
-     type = string
-     description = "User search base DN"
- }
+variable "ad_searchbase" {
+    type = string
+    description = "User search base DN"
+}
 
 
 
- variable "ad_username_admin" {
-     type = string
-     description = "Active Directory username"
- 
- }
+variable "ad_username_admin" {
+    type = string
+    description = "Active Directory username"
 
- variable "ad_password_admin" {
-     type = string
-     description = "Active Directory password"
-     default = ""
-  
- }
+}
 
- variable "ad_password_browse" {
-  type = string
-  description = "Active directory password for the discovery user"
-  
+variable "ad_password_admin" {
+    type = string
+    description = "Active Directory password"
+    default = ""
+
+}
+
+variable "ad_password_browse" {
+type = string
+description = "Active directory password for the discovery user"
+
 }
 
 variable "ad_username_browse" {
- type = string
- description = "Active directory user for discovery"  
+type = string
+description = "Active directory user for discovery"  
+}
+
+variable "ad_server" {
+  type = string
+  description = "Active Directory server"
+  
+}
+
+variable "ad_port" {
+  type = number
+  description = "Active Directory port"
+  default = 389
+  
 }

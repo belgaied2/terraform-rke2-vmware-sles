@@ -139,7 +139,7 @@ module "custom_cluster_virtual_machines" {
 	vsphere_network = var.vsphere_network
 	vsphere_resource_pool = var.vsphere_resource_pool
 	vsphere_template = var.vsphere_template
-	node_names = [for i in range (var.node_count) : "${var.node_name_prefix}${i < 3 ? "-CP${i}" : "-WK${i - 2}"}"
+	node_names = [for i in range (var.node_count) : "${var.node_name_prefix}${i < 3 ? "-CP${i+1}" : "-WK${i - 2}"}"
 ]
 	node_vcpu = var.node_vcpu
 	node_memory = var.node_memory
@@ -155,7 +155,7 @@ module "custom_cluster_virtual_machines" {
       node_ssh_password = var.node_ssh_password,
       node_ssh_user = var.node_ssh_user,
       node_ssh_key = var.node_ssh_key
-      node_name = "${var.node_name_prefix}${i < 3 ? "-CP${i}" : "-WK${i - 2}"}"
+      node_name = "${var.node_name_prefix}${i < 3 ? "-CP${i+1}" : "-WK${i - 2}"}"
       ad_domain = var.ad_domain
       ad_username = var.ad_username
       ad_password = var.ad_password

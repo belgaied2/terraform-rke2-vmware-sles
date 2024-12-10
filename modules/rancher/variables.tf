@@ -22,50 +22,50 @@ variable "rancher_bootstrap_password" {
   
 }
 
- variable "ad_username_browse" {
-     type = string
-     description = "Active Directory username"
-  
- }
+variable "ad_username_browse" {
+    type = string
+    description = "Active Directory username"
 
- variable "ad_password_browse" {
-     type = string
-     description = "Active Directory password"
-     default = ""
-  
- }
+}
 
- variable "ad_domain" {
-   type = string
-   description = "Active Directory domain"
-  
- }
+variable "ad_password_browse" {
+    type = string
+    description = "Active Directory password"
+    default = ""
 
- variable "ad_port" {
-   type = number
-   description = "Active Directory connection port"
-   default = 389
-  
- }
+}
 
+variable "ad_domain" {
+  type = string
+  description = "Active Directory domain"
 
- variable "ad_searchbase" {
-     type = string
-     description = "User search base DN"
- }
+}
+
+variable "ad_port" {
+  type = number
+  description = "Active Directory connection port"
+  default = 389
+
+}
 
 
+variable "ad_searchbase" {
+    type = string
+    description = "User search base DN"
+}
 
- variable "ad_username_admin" {
-     type = string
-     description = "Active Directory admin username"
- 
- }
 
- variable "ad_password_admin" {
-     type = string
-     description = "Active Directory password for the admin user"
-     
-  
- }
+
+variable "ad_username_admin" {
+    type = string
+    description = "Active Directory admin username"
+
+}
+
+variable "ad_password_admin" {
+    type = string
+    description = "Active Directory password for the admin user"
+    
+
+}
 

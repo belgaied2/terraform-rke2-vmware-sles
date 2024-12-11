@@ -35,6 +35,8 @@ module "rancher_virtual_machines" {
       ad_password = var.ad_password
       ad_group = var.ad_group
       init_node_ip = var.rancher_ip_list[0]
+      rmt_server = var.rmt_server
+      rmt_fingerprint = var.rmt_fingerprint
     }))
   ]
 }

@@ -131,3 +131,15 @@ variable "ad_group" {
   description = "Active Directory Group"
   
 }
+
+variable "rmt_server" {
+  description = "RMT server"
+  type        = string
+  
+}
+
+variable "rmt_fingerprint" {
+  description = "RMT fingerprint"
+  type        = string
+  
+}

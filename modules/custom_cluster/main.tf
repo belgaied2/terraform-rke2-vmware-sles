@@ -161,6 +161,8 @@ module "custom_cluster_virtual_machines" {
       ad_password = var.ad_password
       ad_group = var.ad_group
       node_command = "${local.node_command} --worker ${i < 3 ? " --controlplane --etcd" : ""}"
+      rmt_server = var.rmt_server
+      rmt_fingerprint = var.rmt_fingerprint
     }))
   ] 
 }

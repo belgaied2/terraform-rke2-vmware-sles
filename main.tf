@@ -67,7 +67,8 @@ module "rke2" {
   node_count = 3
   node_ssh_key = var.ssh_key
   dns_server = var.dns_server
-
+  rmt_server = var.rmt_server
+  rmt_fingerprint = var.rmt_fingerprint
 
 }
 
@@ -86,6 +87,8 @@ module "rancher" {
   ad_username_browse = var.ad_username_browse
   ad_password_browse = var.ad_password_browse
   ad_domain = var.ad_domain
+
+
 	depends_on = [module.rke2]
 }
 # module "rancher" {
@@ -137,6 +140,8 @@ module "custom_cluster" {
   vip_address = var.vip_address
   interface_vip = var.interface_vip
   vip_cidr = var.vip_cidr
+  rmt_server = var.rmt_server
+  rmt_fingerprint = var.rmt_fingerprint
 }
 
 # Create a new rancher2 Auth Config ActiveDirectory

@@ -236,12 +236,23 @@ description = "Active directory user for discovery"
 variable "ad_server" {
   type = string
   description = "Active Directory server"
-  
 }
 
 variable "ad_port" {
   type = number
   description = "Active Directory port"
   default = 389
+  
+}
+
+variable "rmt_server" {
+  description = "RMT server"
+  type        = string
+  
+}
+
+variable "rmt_fingerprint" {
+  description = "RMT fingerprint"
+  type        = string
   
 }

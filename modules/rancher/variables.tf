@@ -69,3 +69,30 @@ variable "ad_password_admin" {
 
 }
 
+variable "app_git_repo_url" {
+  type = string
+  description = "Git repository URL for fleet"
+  }
+
+variable "app_git_path" {
+  type = string
+  description = "Repository subpath if needed"
+  default = ""
+}
+
+variable "repo_branch" {
+  type = string
+  description = "Branch from where to pull the app"
+  default = "main"
+}
+
+variable "app_name" {
+  type = string
+  description = "Application name"
+}
+
+variable "cluster_name" {
+  type = string
+  description = "Cluster name"
+  
+}

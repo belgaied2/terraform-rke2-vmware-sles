@@ -86,7 +86,12 @@ module "rancher" {
   ad_username_browse = var.ad_username_browse
   ad_password_browse = var.ad_password_browse
   ad_domain = var.ad_domain
+  app_git_repo_url = var.app_git_repo_url
+  app_git_path = var.app_git_path
+  app_name = var.app_name
+  repo_branch = var.repo_branch
 	depends_on = [module.rke2]
+  cluster_name = "cnd4-test-cluster"
 }
 # module "rancher" {
 # 	source = "./modules/rancher"

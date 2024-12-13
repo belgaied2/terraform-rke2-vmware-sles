@@ -123,6 +123,20 @@ spec:
         - hostPath:
             path: /etc/rancher/rke2/rke2.yaml
           name: kubeconfig
+---
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: rke2-ingress-nginx
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    controller:
+      config:
+      service:
+        enabled: true
+        type: LoadBalancer
+        loadBalancerIP: ${var.vip_address}
 EOF
     }
 }

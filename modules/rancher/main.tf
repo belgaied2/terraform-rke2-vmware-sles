@@ -72,9 +72,11 @@ resource "kubernetes_secret" "rancher_ca" {
 resource "helm_release" "rancher_release" {
   name       = "rancher"
   chart      = "rancher"
-  repository = "https://releases.rancher.com/server-charts/stable"
+  repository = "oci://${var.hosted_registry}:${var.hosted_registry_port}/${var.rancher_helm_hosted_repository}"
+  repository_username = var.hosted_registry_username
+  repository_password = var.hosted_registry_password 
   namespace  = kubernetes_namespace.cattle_system.metadata[0].name
-  version    = "2.9.3"
+  version    = var.rancher_helm_tag
   set {
     name  = "hostname"
     value = var.url

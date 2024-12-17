@@ -38,7 +38,7 @@
 module "rke2" {
 	source = "./modules/rke2"
 	node_ssh_user = var.ssh_user
-	ssh_private_key = var.ssh_key_file
+	ssh_private_key = "${path.root}/id_rsa"
 	url = var.lb_ip
   rancher_ip_list = var.nodes_ip
   vsphere_cluster = var.vsphere_cluster
@@ -63,12 +63,21 @@ module "rke2" {
   cni = var.cni
   rke2_token = var.rke2_token
   network_gateway = var.network_gateway
-  node_name_prefix = "CND-BKD-RC"
-  node_count = 3
+  node_name_prefix = var.rancher_node_name_prefix
+  node_count = var.rancher_node_count
   node_ssh_key = var.ssh_key
   dns_server = var.dns_server
   rmt_server = var.rmt_server
   rmt_fingerprint = var.rmt_fingerprint
+  mirror_password = var.mirror_password
+  mirror_username = var.mirror_username
+  mirror_port = var.mirror_port
+  hosted_registry_port = var.hosted_registry_port
+  hosted_registry_password = var.hosted_registry_password
+  hosted_registry_username = var.hosted_registry_username
+  hosted_registry = var.hosted_registry
+  ssh_private_key_path = "${path.root}/id_rsa"
+  binary_images = var.rke2_binary_repos
 
 }
 
@@ -87,7 +96,12 @@ module "rancher" {
   ad_username_browse = var.ad_username_browse
   ad_password_browse = var.ad_password_browse
   ad_domain = var.ad_domain
-
+  hosted_registry = var.hosted_registry
+  hosted_registry_port = var.hosted_registry_port
+  hosted_registry_username = var.hosted_registry_username
+  hosted_registry_password = var.hosted_registry_password
+  rancher_helm_hosted_repository = var.rancher_helm_hosted_repository
+  rancher_helm_tag = var.rancher_helm_tag
 
 	depends_on = [module.rke2]
 }

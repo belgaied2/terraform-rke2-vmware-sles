@@ -1,5 +1,5 @@
 locals {
-  node_command = rancher2_cluster_v2.custom_cluster_vsphere.cluster_registration_token[0].insecure_node_command
+  node_command = replace(rancher2_cluster_v2.custom_cluster_vsphere.cluster_registration_token[0].insecure_node_command, "sudo ", "")
 
 }
 

@@ -1,13 +1,13 @@
 variable "url" {
-    type = string
-    description = "url to reach the loadbalancer (must have been setup on your host machine)"
+  type = string
+  description = "url to reach the loadbalancer (must have been setup on your host machine)"
 }
 
 variable "certmanager_version" {
-    type = string
-    description = "cert-manager version"
-    default = "v1.5.1"
-  
+  type = string
+  description = "cert-manager version"
+  default = "v1.5.1"
+
 }
 
 variable "rancher_password" {
@@ -23,15 +23,15 @@ variable "rancher_bootstrap_password" {
 }
 
 variable "ad_username_browse" {
-    type = string
-    description = "Active Directory username"
+  type = string
+  description = "Active Directory username"
 
 }
 
 variable "ad_password_browse" {
-    type = string
-    description = "Active Directory password"
-    default = ""
+  type = string
+  description = "Active Directory password"
+  default = ""
 
 }
 
@@ -50,22 +50,57 @@ variable "ad_port" {
 
 
 variable "ad_searchbase" {
-    type = string
-    description = "User search base DN"
+  type = string
+  description = "User search base DN"
 }
 
 
 
 variable "ad_username_admin" {
-    type = string
-    description = "Active Directory admin username"
+  type = string
+  description = "Active Directory admin username"
 
 }
 
 variable "ad_password_admin" {
-    type = string
-    description = "Active Directory password for the admin user"
+  type = string
+  description = "Active Directory password for the admin user"
     
 
 }
 
+variable "hosted_registry" {
+  type = string
+  description = "Hosted registry"
+  
+}
+
+variable "hosted_registry_port" {
+  type = number
+  description = "Hosted registry port"
+  
+}
+
+variable "rancher_helm_hosted_repository" {
+  type = string
+  description = "Rancher Helm hosted repository"
+  
+}
+
+variable "rancher_helm_tag" {
+  type = string
+  description = "Rancher Helm tag"
+  
+}
+
+variable "hosted_registry_username" {
+  type = string
+  description = "Hosted registry username"
+  
+}
+
+variable "hosted_registry_password" {
+  type = string
+  description = "Hosted registry password"
+  
+}

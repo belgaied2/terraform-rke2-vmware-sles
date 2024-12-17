@@ -143,3 +143,56 @@ variable "rmt_fingerprint" {
   type        = string
   
 }
+
+variable "hosted_registry" {
+  description = "Hosted registry"
+  type        = string
+  
+}
+
+variable "hosted_registry_port" {
+  description = "Hosted registry port"
+  type        = string
+  
+}
+
+variable "mirror_port" {
+  description = "Mirror port"
+  type        = string
+  
+}
+
+variable "hosted_registry_username" {
+  description = "Hosted registry username"
+  type        = string
+  
+}
+
+variable "hosted_registry_password" {
+  description = "Hosted registry password"
+  type        = string
+  
+}
+
+variable "mirror_username" {
+  description = "Mirror username"
+  type        = string
+  
+}
+
+variable "mirror_password" {
+  description = "Mirror password"
+  type        = string
+  
+}
+
+variable "ssh_private_key_path" {
+  description = "Path to the private key"
+  type        = string
+}
+
+variable "binary_images" {
+  description = "List of binary images to pull"
+  type        = list(string)
+  
+}

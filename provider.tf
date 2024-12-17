@@ -16,6 +16,13 @@ provider "helm" {
     client_key = base64decode(module.rke2.kubeconfig.users[0].user.client-key-data)
 
   }
+
+  # localhost registry with password protection
+  registry {
+    url = "oci://${var.hosted_registry}:${var.hosted_registry_port}"
+    username = var.hosted_registry_username
+    password = var.hosted_registry_password
+  }
 }
 
 provider "kubernetes" {

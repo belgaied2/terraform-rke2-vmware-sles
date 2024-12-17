@@ -1,4 +1,4 @@
-variable node_count {
+variable rancher_node_count {
   type        = number
   description = "Number of nodes to be provisioned"
 }
@@ -13,7 +13,7 @@ variable node_vcpu {
   description = "Number of vcpu for the nodes"
 }
 
-variable node_name {
+variable rancher_node_name_prefix {
   type        = string
   description = "Node names"
 }
@@ -31,12 +31,6 @@ variable ssh_user {
 variable ssh_password {
   type        = string
   description = "SSH password to add to the cloud-init for user access"
-}
-
-variable "ssh_key_file" {
-    type = string
-    description = "ssh key"
-    default = "~/.ssh/id_rsa"
 }
 
 variable "subnet_mask" {
@@ -174,14 +168,15 @@ variable "ad_group" {
 }
 
 variable "rancher_password" {
-    type = string
-    description = "Rancher admin's password"
+  type = string
+  description = "Rancher admin's password"
 }
 
 variable "rancher_bootstrap_password" {
-    type = string
-    description = "Rancher bootstrap password"
+  type = string
+  description = "Rancher bootstrap password"
   
+  sensitive = true 
 }
 
 
@@ -203,28 +198,30 @@ variable "interface_vip" {
 
 
 variable "ad_searchbase" {
-    type = string
-    description = "User search base DN"
+  type = string
+  description = "User search base DN"
 }
 
 
 
 variable "ad_username_admin" {
-    type = string
-    description = "Active Directory username"
+  type = string
+  description = "Active Directory username"
 
 }
 
 variable "ad_password_admin" {
-    type = string
-    description = "Active Directory password"
-    default = ""
+  type = string
+  description = "Active Directory password"
+  default = ""
+  sensitive = true 
 
 }
 
 variable "ad_password_browse" {
-type = string
-description = "Active directory password for the discovery user"
+  type = string
+  description = "Active directory password for the discovery user"
+  sensitive = true 
 
 }
 
@@ -255,4 +252,65 @@ variable "rmt_fingerprint" {
   description = "RMT fingerprint"
   type        = string
   
+}
+
+variable "hosted_registry" {
+  type = string
+  description = "Hosted registry"
+  
+}
+
+variable "hosted_registry_port" {
+  type = number
+  description = "Hosted registry port"
+  default = 5000
+  
+}
+
+variable "hosted_registry_username" {
+  type = string
+  description = "Hosted registry username"
+  
+}
+
+variable "hosted_registry_password" {
+  type = string
+  description = "Hosted registry password"
+  sensitive = true 
+}
+
+variable "mirror_port" {
+  type = number
+  description = "Mirror port"
+  default = 5007
+  
+}
+
+variable "mirror_username" {
+  type = string
+  description = "Mirror username"
+  
+}
+
+variable "mirror_password" {
+  type = string
+  description = "Mirror password"
+  sensitive = true 
+}
+
+variable "rancher_helm_hosted_repository" {
+  type = string
+  description = "Repository in the hosted registry for the Rancher OCI Helm chart"
+  
+}
+
+variable "rancher_helm_tag" {
+  type = string
+  description = "OCI tag for the Rancher Helm chart"
+  
+}
+
+variable "rke2_binary_repos" {
+  type = list(string)
+  description = "List of binary file repos to pull from registry"
 }

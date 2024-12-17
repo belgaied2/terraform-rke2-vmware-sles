@@ -21,8 +21,7 @@ module "rancher_virtual_machines" {
   # Building the userdata array 
   list_userdata_b64 = [ for i in range(var.node_count) :
 
-  base64encode(templatefile("${path.module}/templates/${i == 0 ? "cloud_init_first.cfg" : "cloud_init_join.cfg"}", {
-      rke2_version = var.rke2_version,
+  base64encode(templatefile("${path.module}/templates/cloud_init_rke2.cfg", {
       node_ssh_password = var.node_ssh_password,
       node_ssh_user = var.node_ssh_user,
       node_ssh_key = var.node_ssh_key
@@ -35,10 +34,43 @@ module "rancher_virtual_machines" {
       ad_password = var.ad_password
       ad_group = var.ad_group
       init_node_ip = var.rancher_ip_list[0]
+      init_node = i == 0 ? true : false
       rmt_server = var.rmt_server
       rmt_fingerprint = var.rmt_fingerprint
+      hosted_registry = var.hosted_registry
+      hosted_registry_port = var.hosted_registry_port
+      mirror_port = var.mirror_port
+      hosted_registry_username = var.hosted_registry_username
+      hosted_registry_password = var.hosted_registry_password
+      registry_auth = base64encode("${var.mirror_username}:${var.mirror_password}")
+
     }))
   ]
+}
+
+resource "null_resource" "install_rke2" {
+  count = var.node_count
+
+  provisioner "remote-exec" {
+    connection {
+      type        = "ssh"
+      host        = var.rancher_ip_list[count.index]
+      user        = var.node_ssh_user
+      private_key = file(var.ssh_private_key_path)
+      script_path = "/home/${var.node_ssh_user}/terraform_rke2.sh"
+    }
+
+    inline = concat( 
+    [for i in var.binary_images : "sudo /usr/local/bin/oras pull ${var.hosted_registry}:${var.hosted_registry_port}/${i}:latest --output /opt/rke2/ --registry-config /opt/rke2/config.json --no-tty"],
+  [
+      "sudo INSTALL_RKE2_VERSION='${var.rke2_version}' INSTALL_RKE2_ARTIFACT_PATH=/opt/rke2 sh /opt/rke2/install.sh",
+      "sudo systemctl enable rke2-server",
+      "sudo systemctl start rke2-server > /dev/null 2>&1 || true", # Ignore error because it does actually succeed
+      
+    ])
+  }
+
+  depends_on = [ module.rancher_virtual_machines ]
 }
 
 resource "null_resource" "wait_for_rke2_nodes" {

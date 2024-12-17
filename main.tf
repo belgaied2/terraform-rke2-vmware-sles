@@ -103,7 +103,12 @@ module "rancher" {
   rancher_helm_hosted_repository = var.rancher_helm_hosted_repository
   rancher_helm_tag = var.rancher_helm_tag
 
+  app_git_repo_url = var.app_git_repo_url
+  app_git_path = var.app_git_path
+  app_name = var.app_name
+  repo_branch = var.repo_branch
 	depends_on = [module.rke2]
+  cluster_name = "cnd4-test-cluster"
 }
 # module "rancher" {
 # 	source = "./modules/rancher"

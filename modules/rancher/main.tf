@@ -113,3 +113,25 @@ resource "rancher2_bootstrap" "admin" {
   telemetry        = false
   depends_on       = [helm_release.rancher_release]
 }
+
+
+
+resource "kubernetes_manifest" "nginx_sample_app" {
+  manifest = {
+    apiVersion = "fleet.cattle.io/v1alpha1"
+    kind = "GitRepo"
+
+    metadata = {
+      name = var.app_name
+      namespace = "fleet-default"
+    }
+
+    spec = {
+      branch = var.repo_branch
+      paths = [var.app_git_path]
+      repo = var.app_git_repo_url
+      targets = [var.cluster_name]
+    }
+
+  }
+}

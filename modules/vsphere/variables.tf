@@ -76,9 +76,9 @@ variable "node_memory" {
   description = "Amount of memory to be allocated to the VM"
 }
 
-variable "dns_server" {
-    type = string
-    description = "Ips of the nodes"
+variable "dns_server_list" {
+    type = list(string)
+    description = "Ips of the DNS Servers"
 }
 
 variable "time_zone" {

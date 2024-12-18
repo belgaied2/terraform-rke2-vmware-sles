@@ -62,9 +62,9 @@ variable "network_gateway" {
   type = string
   description = "Network Gateway"
 }
-variable "dns_server" {
-  type = string
-  description = "DNS Server"
+variable "dns_server_list" {
+  type = list(string)
+  description = "DNS Server list"
 }
 variable "ad_domain" {
   type = string

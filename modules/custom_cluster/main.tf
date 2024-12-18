@@ -5,6 +5,7 @@ locals {
 
 resource "rancher2_cluster_v2" "custom_cluster_vsphere" {
   name = var.cluster_name
+  
   kubernetes_version = var.k8s_version
     rke_config {
     additional_manifest = <<EOF
@@ -36,6 +37,19 @@ rules:
   - apiGroups: ["discovery.k8s.io"]
     resources: ["endpointslices"]
     verbs: ["list","get","watch", "update"]
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: system:kube-vip-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:kube-vip-role
+subjects:
+- kind: ServiceAccount
+  name: kube-vip
+  namespace: kube-system
 ---
 apiVersion: apps/v1
 kind: DaemonSet
@@ -159,7 +173,7 @@ module "custom_cluster_virtual_machines" {
 	node_memory = var.node_memory
 	node_count = var.node_count
 	network_gateway = var.network_gateway
-	dns_server = var.dns_server
+	dns_server_list = var.dns_server_list
   ad_domain = var.ad_domain
   vm_ip_list = var.downstream_ip_list
   # Building the userdata array 
@@ -179,4 +193,5 @@ module "custom_cluster_virtual_machines" {
       rmt_fingerprint = var.rmt_fingerprint
     }))
   ] 
+
 }

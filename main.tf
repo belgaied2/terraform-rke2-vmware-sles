@@ -66,7 +66,7 @@ module "rke2" {
   node_name_prefix = var.rancher_node_name_prefix
   node_count = var.rancher_node_count
   node_ssh_key = var.ssh_key
-  dns_server = var.dns_server
+  dns_server_list = var.dns_server_list
   rmt_server = var.rmt_server
   rmt_fingerprint = var.rmt_fingerprint
   mirror_password = var.mirror_password
@@ -107,8 +107,9 @@ module "rancher" {
   app_git_path = var.app_git_path
   app_name = var.app_name
   repo_branch = var.repo_branch
-	depends_on = [module.rke2]
-  cluster_name = "cnd4-test-cluster"
+
+  depends_on = [module.rke2]
+
 }
 # module "rancher" {
 # 	source = "./modules/rancher"
@@ -119,6 +120,11 @@ module "rancher" {
 # 	depends_on = [module.rke2]
 # }
 
+resource "time_sleep" "wait_for_rancher" {
+  depends_on = [module.rancher]
+  create_duration = "60s"
+}
+
 module "custom_cluster" {
   providers = {
     rancher2 = rancher2.admin
@@ -128,8 +134,7 @@ module "custom_cluster" {
   node_count = 5
   node_memory = var.node_memory
   node_vcpu = var.node_vcpu
-  node_name_prefix = "CND-BKD-TST-TC"
-  disk_size = ""
+  node_name_prefix = "CND-BKD-TC"
   vsphere_resource_pool = ""
   vsphere_server = var.vsphere_server
   vsphere_user = var.vsphere_user
@@ -149,18 +154,19 @@ module "custom_cluster" {
   node_ssh_password = var.ssh_password
   time_zone = "Europe/Berlin"
   ipv4_gateway = var.network_gateway
-  dns_server = var.dns_server
+  dns_server_list = var.dns_server_list
   first_node_ip = "10.29.226.232"
   vsphere_template = var.vsphere_template
   node_ssh_key = var.ssh_key
   cluster_name = "cnd4-test-cluster"
   cluster_description = "Test RKE2 Cluster for CND4"
-  k8s_version = var.rke2_version
+  k8s_version = "v1.30.7+rke2r1"
   vip_address = var.vip_address
   interface_vip = var.interface_vip
   vip_cidr = var.vip_cidr
   rmt_server = var.rmt_server
   rmt_fingerprint = var.rmt_fingerprint
+
 }
 
 # Create a new rancher2 Auth Config ActiveDirectory
@@ -173,4 +179,6 @@ resource "rancher2_auth_config_activedirectory" "activedirectory" {
   port = var.ad_port
   test_username = var.ad_username_admin
   test_password = var.ad_password_admin
+
+  depends_on = [module.rancher]
 }

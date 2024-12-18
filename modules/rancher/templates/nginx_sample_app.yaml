@@ -1,0 +1,18 @@
+apiVersion: fleet.cattle.io/v1alpha1
+kind: GitRepo
+metadata:
+  name: ${app_name}
+  namespace: fleet-default
+spec:
+  repo: ${app_git_repo_url}
+  branch: ${repo_branch}
+  paths:
+    - ${app_git_path}
+  targets:
+    - clusterSelector:
+        matchExpressions:
+          - key: provider.cattle.io
+            operator: NotIn
+            values:
+              - harvester
+      

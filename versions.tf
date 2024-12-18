@@ -13,11 +13,12 @@ terraform {
       source = "registry.opentofu.org/rancher/rancher2"
       version = "6.0.0"
     }
+    kubectl = {
+      source = "registry.opentofu.org/gavinbunney/kubectl"
+      version = "1.18.0"
+    }
   }
 
-  backend "s3" {
-    bucket = "airbus-tf-state"
-    key    = "terraform.tfstate"
-    region = "eu-central-1"
+  backend "http" {
   }
 }

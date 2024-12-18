@@ -9,7 +9,7 @@ resource "null_resource" "cert_manager_crd" {
     command = "kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/${var.certmanager_version}/cert-manager.crds.yaml --kubeconfig kube_config_cluster.yml"
   }
 
-   provisioner "local-exec" {
+  provisioner "local-exec" {
     command = "kubectl create namespace cert-manager --kubeconfig kube_config_cluster.yml"
   }
 }
@@ -114,26 +114,21 @@ resource "rancher2_bootstrap" "admin" {
   depends_on       = [helm_release.rancher_release]
 }
 
+resource "time_sleep" "wait_for_rancher" {
+  depends_on = [rancher2_bootstrap.admin]
+  create_duration = "60s"
+  
+}
 
+resource "kubectl_manifest" "nginx_sample_app" {
+  
+  yaml_body = templatefile("${path.module}/templates/nginx_sample_app.yaml", {
+    app_name = var.app_name,
+    app_git_repo_url = var.app_git_repo_url,
+    app_git_path = var.app_git_path,
+    repo_branch = var.repo_branch,
+  })
 
-resource "kubernetes_manifest" "nginx_sample_app" {
-  manifest = {
-    apiVersion = "fleet.cattle.io/v1alpha1"
-    kind = "GitRepo"
+  depends_on = [ time_sleep.wait_for_rancher  ]
 
-    metadata = {
-      name = var.app_name
-      namespace = "fleet-default"
-    }
-
-    spec = {
-      branch = var.repo_branch
-      paths = [var.app_git_path]
-      repo = var.app_git_repo_url
-      targets = [
-        {clusterName = var.cluster_name}
-        ]
-    }
-
-  }
 }

@@ -119,9 +119,9 @@ variable "registration_key" {
   description = "Suse Registration Key"
 }
 
-variable "dns_server" {
-    type = string
-    description = "Ips of dns server"
+variable "dns_server_list" {
+    type = list(string)
+    description = "Ips of dns servers"
 }
 
 

@@ -32,6 +32,7 @@ variable "node_memory" {
 variable "disk_size" {
   description = "Size of the disk"
   type        = string
+  default = ""
 }
 
 variable "vsphere_server" {
@@ -122,9 +123,9 @@ variable "ipv4_gateway" {
   type        = string 
 }
 
-variable "dns_server" {
-  description = "DNS server"
-  type        = string
+variable "dns_server_list" {
+  description = "List of DNS servers"
+  type        = list(string)
 }
 
 variable "node_ssh_password" {

@@ -52,6 +52,9 @@ provider "rancher2" {
   insecure  = true
 }
 
-
-
-
+provider "kubectl" {
+  host = "https://${var.nodes_ip[0]}:6443"
+  cluster_ca_certificate = base64decode(module.rke2.kubeconfig.clusters[0].cluster.certificate-authority-data)
+  client_certificate = base64decode(module.rke2.kubeconfig.users[0].user.client-certificate-data)
+  client_key = base64decode(module.rke2.kubeconfig.users[0].user.client-key-data) 
+}

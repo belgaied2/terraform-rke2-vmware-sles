@@ -66,7 +66,7 @@ resource "vsphere_virtual_machine" "main" {
 
       }
       ipv4_gateway = var.network_gateway
-      dns_server_list = [ var.dns_server ]
+      dns_server_list = var.dns_server_list
     }
   }
 

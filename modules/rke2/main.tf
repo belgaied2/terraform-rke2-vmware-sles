@@ -15,7 +15,7 @@ module "rancher_virtual_machines" {
 	node_memory = var.node_memory
 	node_count = var.node_count
 	network_gateway = var.network_gateway
-	dns_server = var.dns_server
+	dns_server_list = var.dns_server_list
   ad_domain = var.ad_domain
   vm_ip_list = var.rancher_ip_list
   # Building the userdata array 

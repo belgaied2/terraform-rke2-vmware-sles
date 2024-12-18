@@ -130,7 +130,9 @@ resource "kubernetes_manifest" "nginx_sample_app" {
       branch = var.repo_branch
       paths = [var.app_git_path]
       repo = var.app_git_repo_url
-      targets = [var.cluster_name]
+      targets = [
+        {clusterName = var.cluster_name}
+        ]
     }
 
   }
